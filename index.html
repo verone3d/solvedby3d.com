@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SolvedBy3D - 3D Design, Problem Solving, Creative Fabrication</title>
+    <meta name="description" content="SolvedBy3D showcases innovative 3D modeling, 3D printing, and creative problem-solving projects. Custom designs that solve real-world problems.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Cinzel:wght@400;700&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+            background: radial-gradient(ellipse at center, rgba(41, 211, 255, 0.08) 0%, #0a0a0a 70%);
+        }
+
+        .hero-content {
+            z-index: 2;
+            max-width: 800px;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        .ornament {
+            color: #29d3ff;
+            font-size: 1.5rem;
+            letter-spacing: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            line-height: 1.1;
+        }
+
+        .hero-title span {
+            display: block;
+            font-size: 0.3em;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 300;
+            letter-spacing: 0.35em;
+            color: #29d3ff;
+            margin-top: 1rem;
+            text-transform: uppercase;
+        }
+
+        .divider {
+            width: 120px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #29d3ff, transparent);
+            margin: 2rem auto;
+        }
+
+        .hero-tagline {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            font-style: italic;
+            color: #c0c0c0;
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            color: #29d3ff;
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            animation: pulse 2s ease-in-out infinite;
+            cursor: pointer;
+            text-decoration: none;
+            border: 1px solid #29d3ff;
+            padding: 0.6rem 2rem;
+            transition: all 0.3s ease;
+            background: transparent;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .scroll-hint:hover {
+            background: rgba(41, 211, 255, 0.15);
+            color: #fff;
+        }
+
+        .scroll-hint::after {
+            content: '';
+            display: block;
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, #29d3ff, transparent);
+            margin: 0.5rem auto 0;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        /* Gallery Section */
+        .gallery {
+            padding: 4rem 2rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .gallery-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            color: #ffffff;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .gallery-subtitle {
+            text-align: center;
+            color: #888;
+            font-size: 0.9rem;
+            letter-spacing: 0.1em;
+            margin-bottom: 3rem;
+        }
+
+        .gallery-divider {
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #29d3ff, transparent);
+            margin: 1rem auto 3rem;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: rgba(15, 25, 35, 0.8);
+            border: 1px solid rgba(41, 211, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .project-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .project-card:hover {
+            border-color: rgba(41, 211, 255, 0.4);
+            box-shadow: 0 4px 30px rgba(41, 211, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .project-card.visible:hover {
+            transform: translateY(-2px);
+        }
+
+        .project-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            color: #ffffff;
+            padding: 1.2rem 1.5rem 0.8rem;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid rgba(41, 211, 255, 0.1);
+        }
+
+        .project-images {
+            display: flex;
+            gap: 2px;
+            background: #000;
+        }
+
+        .project-images.single {
+            display: block;
+        }
+
+        .project-images a {
+            flex: 1;
+            display: block;
+            min-width: 0;
+        }
+
+        .project-images img {
+            width: 100%;
+            height: 420px;
+            object-fit: cover;
+            display: block;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-images img:hover {
+            opacity: 0.85;
+        }
+
+        .image-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #29d3ff;
+            padding: 0.4rem 1.5rem;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            gap: 2px;
+        }
+
+        .image-label span {
+            flex: 1;
+            text-align: center;
+        }
+
+        .project-description {
+            padding: 1.2rem 1.5rem 1.5rem;
+            font-size: 0.92rem;
+            line-height: 1.7;
+            color: #c0c0c0;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 92vw;
+            max-height: 92vh;
+            object-fit: contain;
+            border: 1px solid rgba(41, 211, 255, 0.2);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 2rem;
+            color: #29d3ff;
+            font-size: 2rem;
+            cursor: pointer;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 300;
+            z-index: 10000;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid rgba(41, 211, 255, 0.1);
+            margin-top: 3rem;
+        }
+
+        .footer-brand {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            color: #29d3ff;
+            letter-spacing: 0.15em;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-copy {
+            font-size: 0.8rem;
+            color: #555;
+            letter-spacing: 0.05em;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .gallery {
+                padding: 3rem 1rem 1rem;
+            }
+
+            .project-images {
+                flex-direction: column;
+            }
+
+            .project-images img {
+                height: 300px;
+            }
+
+            .image-label {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="ornament">&#9670; &#9670; &#9670;</div>
+            <h1 class="hero-title">
+                SOLVEDBY3D
+                <span>3D Design &bull; Problem Solving &bull; Creative Fabrication</span>
+            </h1>
+            <div class="divider"></div>
+            <p class="hero-tagline">
+                Turning ideas into reality — one layer at a time.<br>
+                Custom 3D-printed solutions for real-world problems.
+            </p>
+        </div>
+        <button class="scroll-hint" id="scrollBtn">Explore Projects &#9660;</button>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery" id="gallery">
+        <h2 class="gallery-title">Project Gallery</h2>
+        <p class="gallery-subtitle">38 projects showcasing design, engineering, and creative problem-solving</p>
+        <div class="gallery-divider"></div>
+
+        <div class="projects-grid">
+
+            <!-- 1. Beer Tap Handle -->
+            <article class="project-card">
+                <div class="project-title">Modular Beer Tap Handle</div>
+                <div class="project-images">
+                    <a href="projects/b10Beer Tap Handle-model.jpg" class="lightbox-trigger"><img src="projects/b10Beer Tap Handle-model.jpg" alt="Beer Tap Handle - 3D Model" loading="lazy"></a>
+                    <a href="projects/b10Beer Tap Handle-real.jpg" class="lightbox-trigger"><img src="projects/b10Beer Tap Handle-real.jpg" alt="Beer Tap Handle - Real" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span><span>Printed</span></div>
+                <p class="project-description">Designed a custom, modular beer tap handle for a friend's microbrewery startup, combining sleek aesthetics with practical functionality. The handle features a unique slot system on the sides for the brewery's name and a top-front insert for the logo, with a discreet hole mechanism allowing easy swapping of beer name inserts.</p>
+            </article>
+
+            <!-- 2. Shelving Unit Base Brackets -->
+            <article class="project-card">
+                <div class="project-title">Shelving Unit Base Brackets</div>
+                <div class="project-images single">
+                    <a href="projects/bsm10cart wheel bracket v20-model.jpg" class="lightbox-trigger"><img src="projects/bsm10cart wheel bracket v20-model.jpg" alt="Shelving Unit Base Brackets - 3D Model" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span></div>
+                <p class="project-description">Crafted for a compact hobby space, these 3D-printed shelving unit base brackets were designed to maximize utility in a small area dedicated to 3D printing. Using four brackets and a repurposed piece of plywood, this sturdy base supports a shelving unit while incorporating wheels for easy mobility.</p>
+            </article>
+
+            <!-- 3. Clothes Bar End Support -->
+            <article class="project-card">
+                <div class="project-title">Clothes Bar End Support</div>
+                <div class="project-images single">
+                    <a href="projects/c10clothesBarEndSupport v1-model.jpg" class="lightbox-trigger"><img src="projects/c10clothesBarEndSupport v1-model.jpg" alt="Clothes Bar End Support - 3D Model" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span></div>
+                <p class="project-description">Designed for a custom closet in an upstairs Cape Cod bedroom, this 3D-printed clothes bar end support provides robust and stylish anchoring for closet rods. Crafted to be printed in white to seamlessly blend with the closet's cohesive color scheme.</p>
+            </article>
+
+            <!-- 4. Closet Center Bar Support -->
+            <article class="project-card">
+                <div class="project-title">Closet Center Bar Support</div>
+                <div class="project-images">
+                    <a href="projects/c11closet_center_bar_support-model.jpg" class="lightbox-trigger"><img src="projects/c11closet_center_bar_support-model.jpg" alt="Closet Center Bar Support - 3D Model" loading="lazy"></a>
+                    <a href="projects/c11closet_center_bar_support-real.jpg" class="lightbox-trigger"><img src="projects/c11closet_center_bar_support-real.jpg" alt="Closet Center Bar Support - Real" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span><span>Installed</span></div>
+                <p class="project-description">This innovative closet clothes bar support was designed to address a unique challenge in a custom-built upstairs Cape Cod bedroom closet. Unable to find a suitable off-the-shelf solution, this sturdy 3D-printed bracket provides reliable center support for a clothes rod.</p>
+            </article>
+
+            <!-- 5. Sliding Door Track -->
+            <article class="project-card">
+                <div class="project-title">Sliding Door Track with Felt Pads</div>
+                <div class="project-images">
+                    <a href="projects/c12Closet Door separated-model.jpg" class="lightbox-trigger"><img src="projects/c12Closet Door separated-model.jpg" alt="Sliding Door Track - 3D Model" loading="lazy"></a>
+                    <a href="projects/c12Closet Door separated-real.jpg" class="lightbox-trigger"><img src="projects/c12Closet Door separated-real.jpg" alt="Sliding Door Track - Real" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span><span>Installed</span></div>
+                <p class="project-description">This innovative sliding door track was designed for a custom closet system, prioritizing smooth and effortless door movement. Thoughtfully engineered with integrated holes for felt pads, the track ensures doors glide freely while minimizing noise and wear.</p>
+            </article>
+
+            <!-- 6. Sliding Door Handles -->
+            <article class="project-card">
+                <div class="project-title">Sliding Door Handles</div>
+                <div class="project-images single">
+                    <a href="projects/c13door handles v3-model.jpg" class="lightbox-trigger"><img src="projects/c13door handles v3-model.jpg" alt="Sliding Door Handles - 3D Model" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span></div>
+                <p class="project-description">These sleek sliding door handles were designed for a custom closet system, tailored to complement a minimalist plug design. The ergonomic design provides a comfortable grip while maintaining durability for daily use.</p>
+            </article>
+
+            <!-- 7. Wire Stripper Bracket -->
+            <article class="project-card">
+                <div class="project-title">Wire Stripper Bracket</div>
+                <div class="project-images single">
+                    <a href="projects/e10equipment mounts v32-model.jpg" class="lightbox-trigger"><img src="projects/e10equipment mounts v32-model.jpg" alt="Wire Stripper Bracket - 3D Model" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span></div>
+                <p class="project-description">Keep your workspace organized with this 3D-printed bracket, designed to hang wire strippers on the side of a custom-built Murphy electronic bench. The bracket features a triangular support structure for added stability, with a slotted top to securely hold the wire strippers. Crafted from durable PETG.</p>
+            </article>
+
+            <!-- 8. PCB Vise Holder -->
+            <article class="project-card">
+                <div class="project-title">PCB Vise Storage Mount</div>
+                <div class="project-images single">
+                    <a href="projects/e11PCB_VICE_HOLDER v4-model.jpg" class="lightbox-trigger"><img src="projects/e11PCB_VICE_HOLDER v4-model.jpg" alt="PCB Vise Holder - 3D Model" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span></div>
+                <p class="project-description">A compact, sturdy storage solution for a PCB vise, tailored for an electronic Murphy workbench. This 3D-printed component has a U-shaped structure with two elevated platforms connected by a recessed channel, allowing the PCB vise to slide in securely when the workbench is closed.</p>
+            </article>
+
+            <!-- 9. Walking Stick Grip and Tip -->
+            <article class="project-card">
+                <div class="project-title">Custom Walking Stick Tip &amp; Grip</div>
+                <div class="project-images single">
+                    <a href="projects/f10walkingStickGripAndTip-model.jpg" class="lightbox-trigger"><img src="projects/f10walkingStickGripAndTip-model.jpg" alt="Walking Stick Grip and Tip - 3D Model" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span></div>
+                <p class="project-description">A custom-designed walking stick tip and grip, 3D printed for a neighbor to enhance mobility and comfort. Crafted using TPU (Thermoplastic Polyurethane), the tip and grip provide exceptional gripping power, ensuring stability on various surfaces. The design features strategic cutouts for added traction.</p>
+            </article>
+
+            <!-- 10. Dump Truck Washer Cap -->
+            <article class="project-card">
+                <div class="project-title">Dump Truck Windshield Washer Cap</div>
+                <div class="project-images single">
+                    <a href="projects/f11_dump_truck_windshield_washer_cap-model.jpg" class="lightbox-trigger"><img src="projects/f11_dump_truck_windshield_washer_cap-model.jpg" alt="Dump Truck Washer Cap - 3D Model" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span></div>
+                <p class="project-description">Designed and 3D-printed a custom windshield washer reservoir cap for a heavy-duty dump truck, ensuring a precise fit and reliable performance. This cap features a secure sealing mechanism to prevent leaks, a small vent hole for pressure regulation, and a sturdy tab for easy removal.</p>
+            </article>
+
+            <!-- 11. Amateur Radio Operator Plaque -->
+            <article class="project-card">
+                <div class="project-title">Amateur Radio Operator Plaque</div>
+                <div class="project-images">
+                    <a href="projects/g10sr francesca-model.jpg" class="lightbox-trigger"><img src="projects/g10sr francesca-model.jpg" alt="Radio Operator Plaque - 3D Model" loading="lazy"></a>
+                    <a href="projects/g10sr francesca-real.jpg" class="lightbox-trigger"><img src="projects/g10sr francesca-real.jpg" alt="Radio Operator Plaque - Real" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span><span>Printed</span></div>
+                <p class="project-description">A 3D-printed plaque created as a gift for call sign WA1RZT, licensed in 1978. Utilizing multicolor capable printers, this plaque features vibrant, distinct color layers with the call sign, year, and an etched silhouette of a nun and radio tower with signal waves.</p>
+            </article>
+
+            <!-- 12. Moss-Protecting Pot Cover -->
+            <article class="project-card">
+                <div class="project-title">Moss-Protecting Pot Cover</div>
+                <div class="project-images">
+                    <a href="projects/h10tree_pot_cover-model.jpg" class="lightbox-trigger"><img src="projects/h10tree_pot_cover-model.jpg" alt="Pot Cover - 3D Model" loading="lazy"></a>
+                    <a href="projects/h10tree_pot_cover-real.jpg" class="lightbox-trigger"><img src="projects/h10tree_pot_cover-real.jpg" alt="Pot Cover - Real" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span><span>In Use</span></div>
+                <p class="project-description">Designed to outsmart curious cats, this 3D-printed pot cover shields the moss in a decorative fake tree pot. Tailored to fit snugly over the moss, it prevents feline interference while preserving the pot's aesthetic. Printed in the same color as the pot for a seamless look.</p>
+            </article>
+
+            <!-- 13. T-Rail Shelving Connector -->
+            <article class="project-card">
+                <div class="project-title">T-Rail Shelving Connector</div>
+                <div class="project-images single">
+                    <a href="projects/h1120x20_connector_001 v11-model.jpg" class="lightbox-trigger"><img src="projects/h1120x20_connector_001 v11-model.jpg" alt="T-Rail Connector - 3D Model" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span></div>
+                <p class="project-description">This versatile shelving connector is part of a series of innovative designs crafted to repurpose materials. Engineered for 20x20 T-rail systems, this 3D-printed connector securely joins 1x3 boards to create sturdy, customizable shelving units.</p>
+            </article>
+
+            <!-- 14. Folding Table Leg Catch -->
+            <article class="project-card">
+                <div class="project-title">Folding Table Leg Catch</div>
+                <div class="project-images single">
+                    <a href="projects/h12folding_table_catch v4-model.jpg" class="lightbox-trigger"><img src="projects/h12folding_table_catch v4-model.jpg" alt="Folding Table Leg Catch - 3D Model" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span></div>
+                <p class="project-description">A meticulously designed 3D-printed replacement leg catch, crafted to secure table legs with precision. Engineered for durability using high-quality PLA, this catch features a robust yet flexible locking mechanism that ensures legs stay firmly in place when extended and fold effortlessly for storage.</p>
+            </article>
+
+            <!-- 15. Furnace Pump Enclosure -->
+            <article class="project-card">
+                <div class="project-title">Furnace Pump Enclosure Brackets</div>
+                <div class="project-images single">
+                    <a href="projects/h12PumpEnclosure v14-model.jpg" class="lightbox-trigger"><img src="projects/h12PumpEnclosure v14-model.jpg" alt="Pump Enclosure Brackets - 3D Model" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span></div>
+                <p class="project-description">Designed to solve a practical problem, these 3D-printed enclosure brackets were created to protect a furnace fluid pump from curious cats pulling at wires and hoses. Combined with scrap paneling, the brackets form a secure, custom-fit enclosure.</p>
+            </article>
+
+            <!-- 16. Cat Wall Art -->
+            <article class="project-card">
+                <div class="project-title">Cat Wall Art</div>
+                <div class="project-images single">
+                    <a href="projects/h13olive-standing-002 v4-model.jpg" class="lightbox-trigger"><img src="projects/h13olive-standing-002 v4-model.jpg" alt="Cat Wall Art - 3D Model" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span></div>
+                <p class="project-description">Transform cherished memories into stunning decor with this 3D-printed wall art of a beloved cat, originally captured in a photograph. The photo was converted into an SVG file, then extruded into a 3D model. The design was segmented into multiple pieces for larger print size, with custom standoffs for damage-free wall mounting.</p>
+            </article>
+
+            <!-- 17. Wall Art Standoff -->
+            <article class="project-card">
+                <div class="project-title">Wall Art Standoff</div>
+                <div class="project-images single">
+                    <a href="projects/h14wall-art-standoff-model.jpg" class="lightbox-trigger"><img src="projects/h14wall-art-standoff-model.jpg" alt="Wall Art Standoff - 3D Model" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span></div>
+                <p class="project-description">A cleverly designed 3D-printed standoff for wall art display. This compact cylindrical piece features a shallow indentation on one side, perfectly sized to hold poster putty, allowing for secure, non-invasive mounting on any surface — no nails or holes required.</p>
+            </article>
+
+            <!-- 18. Cat Litter Scoop -->
+            <article class="project-card">
+                <div class="project-title">Cat Litter Scoop</div>
+                <div class="project-images single">
+                    <a href="projects/h15cat-litter-scoop-model.jpg" class="lightbox-trigger"><img src="projects/h15cat-litter-scoop-model.jpg" alt="Cat Litter Scoop - 3D Model" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span></div>
+                <p class="project-description">A practical 3D-printed cat litter scoop featuring a sturdy handle and a wide, perforated scoop with evenly spaced holes. This tool quickly sifts litter to remove waste while retaining clean granules. Made from durable PLA, lightweight yet strong.</p>
+            </article>
+
+            <!-- 19. Electric Cable Holder -->
+            <article class="project-card">
+                <div class="project-title">Heavy-Duty Electric Cable Holder</div>
+                <div class="project-images single">
+                    <a href="projects/h16electic cable clip v2-model.jpg" class="lightbox-trigger"><img src="projects/h16electic cable clip v2-model.jpg" alt="Electric Cable Holder - 3D Model" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span></div>
+                <p class="project-description">A 3D-printed heavy-duty cable holder designed for a 4-way switch setup using cables thicker than standard Romex. This robust holder features a wide, curved channel to accommodate the increased diameter. Crafted from durable PETG for enhanced strength and environmental resistance.</p>
+            </article>
+
+            <!-- 20. Sound Bar Wall Mount -->
+            <article class="project-card">
+                <div class="project-title">Sound Bar Wall Mount</div>
+                <div class="project-images single">
+                    <a href="projects/h17bluetooth_TV_speaker_mount v5-model.jpg" class="lightbox-trigger"><img src="projects/h17bluetooth_TV_speaker_mount v5-model.jpg" alt="Sound Bar Mount - 3D Model" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span></div>
+                <p class="project-description">Keep your TV stand clutter-free with this 3D-printed sound bar mount, designed to hang audio equipment neatly below the stand. This sleek, minimalist mount features a sturdy bracket with raised edges and two mounting holes at each end. Crafted from durable PETG.</p>
+            </article>
+
+            <!-- 21. French Door Alignment Guide -->
+            <article class="project-card">
+                <div class="project-title">French Door Alignment Guide</div>
+                <div class="project-images single">
+                    <a href="projects/h18Kyle_french_door_stop v6-model.jpg" class="lightbox-trigger"><img src="projects/h18Kyle_french_door_stop v6-model.jpg" alt="French Door Guide - 3D Model" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span></div>
+                <p class="project-description">Ensure effortless operation of French doors with this 3D-printed alignment guide, designed to keep doors properly aligned and eliminate the need to adjust one door constantly for latching. The guide features a sturdy, U-shaped bracket with a curved cutout.</p>
+            </article>
+
+            <!-- 22. Note Paper & Pen Holder -->
+            <article class="project-card">
+                <div class="project-title">Note Paper &amp; Pen Holder</div>
+                <div class="project-images single">
+                    <a href="projects/h19note paper holder v7-model.jpg" class="lightbox-trigger"><img src="projects/h19note paper holder v7-model.jpg" alt="Paper Holder - 3D Model" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span></div>
+                <p class="project-description">A minimalist paper and pen holder, perfectly complementing the sustainable practice of reusing printer paper cut into quarters. Features a rectangular base with raised edges, a small cutout for easy paper retrieval, and an integrated cylindrical pen holder.</p>
+            </article>
+
+            <!-- 23. Popcorn Funnel -->
+            <article class="project-card">
+                <div class="project-title">Popcorn Bottle Funnel</div>
+                <div class="project-images single">
+                    <a href="projects/h20Pop Corn Funnel 002 v3-model.jpg" class="lightbox-trigger"><img src="projects/h20Pop Corn Funnel 002 v3-model.jpg" alt="Popcorn Funnel - 3D Model" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span></div>
+                <p class="project-description">A custom funnel tailored for popcorn lovers, designed to fit perfectly inside the neck of a 32 oz bottle. This practical solution simplifies refilling by allowing bulk popcorn from a cost-effective 10 lb bag to be easily transferred.</p>
+            </article>
+
+            <!-- 24. Peg Board Pen Holder -->
+            <article class="project-card">
+                <div class="project-title">Peg Board Pen &amp; Pencil Holder</div>
+                <div class="project-images">
+                    <a href="projects/h21peg board hanger v6_combined-model.jpg" class="lightbox-trigger"><img src="projects/h21peg board hanger v6_combined-model.jpg" alt="Peg Board Holder - 3D Model" loading="lazy"></a>
+                    <a href="projects/h21peg board hanger v6_combined-real.jpg" class="lightbox-trigger"><img src="projects/h21peg board hanger v6_combined-real.jpg" alt="Peg Board Holder - Real" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span><span>In Use</span></div>
+                <p class="project-description">A clever pen and pencil storage system designed around available resources. This 3D-printed holder integrates with wall control panels, featuring a circular ring that fits a repurposed Solo cup, with a mounting bracket and four pegs for easy attachment.</p>
+            </article>
+
+            <!-- 25. Antenna Mount with Hirth Joint -->
+            <article class="project-card">
+                <div class="project-title">Antenna Mount with Hirth Joint</div>
+                <div class="project-images single">
+                    <a href="projects/r102meter-SAT-Mount v6-model.jpg" class="lightbox-trigger"><img src="projects/r102meter-SAT-Mount v6-model.jpg" alt="Antenna Mount - 3D Model" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span></div>
+                <p class="project-description">A 3D-printed antenna mount tailored for amateur radio enthusiasts. Designed with a Hirth joint for precise, versatile antenna positioning to optimize signals from satellites like NOAA or Meteor M2. Printed in PETG for outdoor durability against UV exposure, moisture, and temperature changes.</p>
+            </article>
+
+            <!-- 26. Surge Protector Bracket -->
+            <article class="project-card">
+                <div class="project-title">Surge Protector T-Slot Bracket</div>
+                <div class="project-images single">
+                    <a href="projects/r11surge_protector v9-model.jpg" class="lightbox-trigger"><img src="projects/r11surge_protector v9-model.jpg" alt="Surge Protector Bracket - 3D Model" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span></div>
+                <p class="project-description">A 3D-printed bracket to securely mount surge protectors to a 20x20 T-slot shelving system. The bracket features a slotted design that slides into the T-slot, while two mounting holes on the opposing side allow the surge protector to be fastened with screws. Crafted from durable PETG.</p>
+            </article>
+
+            <!-- 27. Tape Measure Yagi Antenna -->
+            <article class="project-card">
+                <div class="project-title">2-Meter Tape Measure Antenna Connector</div>
+                <div class="project-images single">
+                    <a href="projects/r13tape-measure-yagi v26-model.jpg" class="lightbox-trigger"><img src="projects/r13tape-measure-yagi v26-model.jpg" alt="Tape Measure Antenna - 3D Model" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span></div>
+                <p class="project-description">A key component of a 2-meter tape measure antenna designed for radio direction finding (Fox Hunt). Uses flexible tape measures as antenna elements. The connector holds all components together without additional screws, and integrated loops allow elements to fold up for compact storage and transport.</p>
+            </article>
+
+            <!-- 28. SEE3D Braille Challenge -->
+            <article class="project-card">
+                <div class="project-title">SEE3D Braille Challenge Design</div>
+                <div class="project-images single">
+                    <a href="projects/s10braille_challenge_2025_combined-model.jpg" class="lightbox-trigger"><img src="projects/s10braille_challenge_2025_combined-model.jpg" alt="Braille Challenge Design - 3D Model" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span></div>
+                <p class="project-description">Inspired by recovery from a detached retina and macula, this design concept for the 2025 Braille Challenge features a tactile brain model encircled by a ring inscribed with "Like Stars in the Dark, Minds Light Up the Way" in both raised text and Braille. Created for SEE3D.org, a charity dedicated to 3D printing items for the blind and visually challenged.</p>
+            </article>
+
+            <!-- 29. Bambu X1C Basket Holder -->
+            <article class="project-card">
+                <div class="project-title">Bambu Lab X1C Waste Basket Holder</div>
+                <div class="project-images single">
+                    <a href="projects/x10bambu_x1c_basket_holder-model.jpg" class="lightbox-trigger"><img src="projects/x10bambu_x1c_basket_holder-model.jpg" alt="Bambu Basket Holder - 3D Model" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span></div>
+                <p class="project-description">A 3D-printed waste bin basket holder designed to hang off the back of a Bambu Lab X1C printer. The holder features a curved hook that securely grips the printer's edge, with a rectangular slot to hold a small basket for collecting filament waste during multi-material prints.</p>
+            </article>
+
+            <!-- 30. Multi-Color Test Print -->
+            <article class="project-card">
+                <div class="project-title">Multi-Color Test Print</div>
+                <div class="project-images single">
+                    <a href="projects/x11TEST 3 Color v4-model.jpg" class="lightbox-trigger"><img src="projects/x11TEST 3 Color v4-model.jpg" alt="Multi-Color Test Print - 3D Model" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span></div>
+                <p class="project-description">A multi-colored cylindrical stack marking the first creation using a newly unboxed Bambu Lab X1 Carbon 3D printer. This design features three concentric cylindrical sections of decreasing diameter, showcasing the printer's capability to produce vibrant, multi-colored prints with precise layering.</p>
+            </article>
+
+            <!-- 31. Braille Challenge Entry (Alternate) -->
+            <article class="project-card">
+                <div class="project-title">Braille Challenge Entry</div>
+                <div class="project-images">
+                    <a href="projects/braille_challenge_2025 v33-model.jpg" class="lightbox-trigger"><img src="projects/braille_challenge_2025 v33-model.jpg" alt="Braille Challenge - Model View" loading="lazy"></a>
+                    <a href="projects/2braille_challenge_2025 v33.png" class="lightbox-trigger"><img src="projects/2braille_challenge_2025 v33.png" alt="Braille Challenge - Alternate View" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>Model View</span><span>Alternate View</span></div>
+                <p class="project-description">An alternate angle and render of the 2025 Braille Challenge design concept, showcasing the tactile brain model with its motivational inscription in raised text and Braille, designed to empower the visually challenged community.</p>
+            </article>
+
+            <!-- 32. Fish Eye Pool Inlet Cap -->
+            <article class="project-card">
+                <div class="project-title">Fish Eye Pool Inlet Cap</div>
+                <div class="project-images single">
+                    <a href="projects/fish eye cap for pool inlet v14-model.jpg" class="lightbox-trigger"><img src="projects/fish eye cap for pool inlet v14-model.jpg" alt="Fish Eye Pool Cap - 3D Model" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span></div>
+                <p class="project-description">A custom 3D-printed cap designed to fit a pool inlet, featuring a fish-eye dome shape for improved water flow distribution. Engineered for a precise fit and durable outdoor use.</p>
+            </article>
+
+            <!-- 33. Leg Hinges -->
+            <article class="project-card">
+                <div class="project-title">Leg Hinges</div>
+                <div class="project-images single">
+                    <a href="projects/leg_hinges v17-model.jpg" class="lightbox-trigger"><img src="projects/leg_hinges v17-model.jpg" alt="Leg Hinges - 3D Model" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span></div>
+                <p class="project-description">Custom 3D-printed leg hinges designed for folding furniture applications. Engineered for smooth operation and reliable support when legs are fully extended.</p>
+            </article>
+
+            <!-- 34. Matt Key Holder -->
+            <article class="project-card">
+                <div class="project-title">Key Holder</div>
+                <div class="project-images single">
+                    <a href="projects/matt key holder v8-model.jpg" class="lightbox-trigger"><img src="projects/matt key holder v8-model.jpg" alt="Key Holder - 3D Model" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span></div>
+                <p class="project-description">A personalized 3D-printed key holder designed for convenient, organized key storage. Features a clean, functional design for wall mounting.</p>
+            </article>
+
+            <!-- 35. Ornament -->
+            <article class="project-card">
+                <div class="project-title">Decorative Ornament</div>
+                <div class="project-images single">
+                    <a href="projects/ornament v4-model.jpg" class="lightbox-trigger"><img src="projects/ornament v4-model.jpg" alt="Ornament - 3D Model" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span></div>
+                <p class="project-description">A custom 3D-printed decorative ornament showcasing intricate design work and the capabilities of modern 3D printing technology.</p>
+            </article>
+
+            <!-- 36. Monitor Mount -->
+            <article class="project-card">
+                <div class="project-title">Monitor Mount</div>
+                <div class="project-images single">
+                    <a href="projects/Untitlemonitor mount v4-model.jpg" class="lightbox-trigger"><img src="projects/Untitlemonitor mount v4-model.jpg" alt="Monitor Mount - 3D Model" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span></div>
+                <p class="project-description">A 3D-printed monitor mount bracket designed for custom workspace setups. Provides stable, adjustable positioning for displays in compact or unconventional configurations.</p>
+            </article>
+
+            <!-- 37. Utility Knife Cap -->
+            <article class="project-card">
+                <div class="project-title">Utility Knife Cap</div>
+                <div class="project-images single">
+                    <a href="projects/utility knife cap correct shape v6-model.jpg" class="lightbox-trigger"><img src="projects/utility knife cap correct shape v6-model.jpg" alt="Utility Knife Cap - 3D Model" loading="lazy"></a>
+                </div>
+                <div class="image-label"><span>3D Model</span></div>
+                <p class="project-description">A replacement utility knife cap, precision-modeled to match the correct shape of the original. 3D printed for a perfect fit, this cap restores full functionality to the tool while demonstrating the power of custom fabrication for everyday repairs.</p>
+            </article>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-brand">SOLVEDBY3D</div>
+        <div class="divider"></div>
+        <p class="footer-copy">&copy; 2025 SolvedBy3D.com &mdash; Custom 3D Design &amp; Fabrication</p>
+    </footer>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <img src="" alt="Full size image" id="lightboxImg">
+    </div>
+
+    <script>
+        // Smooth scroll from hero to gallery
+        document.getElementById('scrollBtn').addEventListener('click', function() {
+            document.getElementById('gallery').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Lightbox
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+
+        document.querySelectorAll('.lightbox-trigger').forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                lightboxImg.src = this.href;
+                lightbox.classList.add('active');
+            });
+        });
+
+        lightbox.addEventListener('click', function() {
+            lightbox.classList.remove('active');
+            lightboxImg.src = '';
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                lightbox.classList.remove('active');
+                lightboxImg.src = '';
+            }
+        });
+
+        // Scroll-triggered fade-in for project cards
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+
+        document.querySelectorAll('.project-card').forEach(function(card) {
+            observer.observe(card);
+        });
+    </script>
+
+</body>
+</html>
